@@ -86,9 +86,16 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        //pošto imamo u tabeli details a klijent šalje description, moramo ovako...
+        $request['details']=$request->description;
+        unset($request['details']);
+        $product->update($request->all());
+
+        return response([
+            'data'=>new ProductResource($product)
+        ], Response::HTTP_CREATED);
     }
 
     /**
