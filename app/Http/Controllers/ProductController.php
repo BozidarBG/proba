@@ -86,11 +86,11 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(Request $request, Product $product)
     {
         //pošto imamo u tabeli details a klijent šalje description, moramo ovako...
         $request['details']=$request->description;
-        unset($request['details']);
+        unset($request['description']);
         $product->update($request->all());
 
         return response([
@@ -106,6 +106,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response([
+            null
+        ], Response::HTTP_NO_CONTENT);
     }
 }
